@@ -12,13 +12,28 @@ class AutomovilSeeder extends Seeder
      */
     public function run()
     {
+        
         Automovil::create([
         	
         	'placa' => 'XNZ229',
+            'marca' => 'toyota',
         	'modelo'=> 'corolla',
         	'anno' => '1991',
         	'capacidad' => '40',
         ]);
+
+
+
+        Automovil::create([
+            
+            'placa' => 'CRACKTOTAL',
+            'marca' => 'Ford',
+            'modelo'=> 'Fiesta',
+            'anno' => '2010',
+            'capacidad' => '50',
+        ]);
     }
+
+
 }
    
