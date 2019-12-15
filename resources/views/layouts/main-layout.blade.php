@@ -1,3 +1,5 @@
+
+
 <body class="animsition">
     <div class="page-wrapper">
         <!-- HEADER MOBILE
@@ -128,7 +130,7 @@
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
+                        <li class="">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-desktop"></i>Solicitudes</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -141,18 +143,22 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-copy"></i>Datos Personales</a>
+                            <a href="personas">
+                                <i class="fas fa-user"></i>Perfil de Usuario</a>
                         </li>
                         <li>
-                            <a class="js-arrow" href="automovil">
-                                <i class="fas fa-check-square"></i>Automovil</a>
+                            <a class="js-arrow" href="cars">
+                                <i class="fas fa-car"></i>Automoviles</a>
                         </li>
                         <li>
                             <a href="#">
-                                <i class="fas fa-chart-bar"></i>Informes</a>
+                                <i class="fas fa-fire"></i>Estaciones de Servicio</a>
                         </li>
-                            </ul>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-line-chart"></i>Informes</a>
+                        </li>
+                    </ul>
                         </li>
                     </ul>
                 </nav>

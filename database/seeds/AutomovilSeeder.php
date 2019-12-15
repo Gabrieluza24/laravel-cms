@@ -1,6 +1,6 @@
 <?php
 
-use App\Automovil;
+use App\Car;
 use Illuminate\Database\Seeder;
 
 class AutomovilSeeder extends Seeder
@@ -13,7 +13,7 @@ class AutomovilSeeder extends Seeder
     public function run()
     {
         
-        Automovil::create([
+        Car::create([
         	
         	'placa' => 'XNZ229',
             'marca' => 'toyota',
@@ -24,7 +24,7 @@ class AutomovilSeeder extends Seeder
 
 
 
-        Automovil::create([
+        Car::create([
             
             'placa' => 'CRACKTOTAL',
             'marca' => 'Ford',

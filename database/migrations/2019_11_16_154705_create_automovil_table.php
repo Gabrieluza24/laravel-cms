@@ -13,14 +13,16 @@ class CreateAutomovilTable extends Migration
      */
     public function up()
     {
-        Schema::create('automovil', function (Blueprint $table) {
-            $table->string('placa',10)->unique();
-            $table->string('marca',50);
-            $table->string('modelo',50);
-            $table->year('anno');
-            $table->unsignedInteger('capacidad');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('cars')) {
+            Schema::create('cars', function (Blueprint $table) {
+                $table->string('placa',10)->unique()->primary();
+                $table->string('marca',50);
+                $table->string('modelo',50);
+                $table->year('anno');
+                $table->unsignedInteger('capacidad');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,6 +32,6 @@ class CreateAutomovilTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('automovil');
+        Schema::dropIfExists('cars');
     }
 }

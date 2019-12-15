@@ -13,8 +13,8 @@ class UserSeeder extends Seeder
     {
             User::create([
         	
-        	'name' => 'administrador',
-            'email' => 'admin@admin.com',
+        	'name' => 'Gabriel',
+            'email' => 'gabrieluza24@gmail.com',
         	'password'=> bycript('22222222'),
         ]);
     }
