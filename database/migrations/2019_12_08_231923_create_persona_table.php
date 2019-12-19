@@ -15,10 +15,14 @@ class CreatePersonaTable extends Migration
     {
         if (!Schema::hasTable('personas')) {
         Schema::create('personas', function (Blueprint $table) {
-            $table->string('cedula',10)->unique()->required();
-            $table->string('nombre',100);
-            $table->string('apellido',100);
+            $table->integer('cedula',10)->unique()->required();
+            $table->char('tipocedula');
+            $table->BigInteger('usuario_id')->unsigned();
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name');
+            $table->string('lastname');
             $table->string('telefono')->unique();
+            $table->string('estado');
             $table->timestamps();
         });
         }

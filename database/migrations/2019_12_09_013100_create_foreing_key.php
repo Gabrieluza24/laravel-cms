@@ -20,8 +20,7 @@ class CreateForeingKey extends Migration
             $table->foreign('placa_car')->references('placa')->on('cars');
             $table->unsignedInteger('id_status')->onDelete('cascade');            
             $table->foreign('id_status')->references('id')->on('status');
-
-        });
+            });
 
         Schema::table('transporte', function (Blueprint $table) {
             $table->unsignedInteger('rif_estacion')->onDelete('cascade');            
@@ -38,6 +37,7 @@ class CreateForeingKey extends Migration
      */
     public function down()
     {
+
         Schema::table('solicitud', function (Blueprint $table) {
             $table->dropForeign('solicitud_rif_estacion_foreign');
             $table->dropForeign('solicitud_placa_automovil_foreign');

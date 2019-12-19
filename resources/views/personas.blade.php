@@ -3,6 +3,59 @@
 @include('layouts.mainfooter')
 
       <div class="row m-t-30">
+      @if(empty($personas->first()->cedula))
+                <div class="col-lg-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Completar Registro</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="tab-content pl-3 pt-2" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="custom-nav-datos" role="tabpanel" aria-labelledby="custom-nav-datos-tab">
+                        
+                        <form action="{{ route('personas.store')}}" method="POST">
+                          @csrf
+                        <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputname">Nombre</label>
+                          <input type="text" class="form-control" id="inputname" name="name" value="{{ Auth::user()->name }}">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputlastname">Apellido</label>
+                          <input type="text" class="form-control" id="inputlastname" name="lastname" value="{{ Auth::user()->lastname }}">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <label class="col-md-12" for="inputtelefono">Cedula</label> 
+                        <div class="form-group col-md-2">
+                          <select id="tipocedula" name="tipocedula" class="form-control">
+                                <option value="">--</option>
+                                <option value="V">V</option>
+                                <option value="E">E</option> 
+                          </select>
+                        </div>
+                        <div class="form-group col-md-10">
+                          <input type="text" class="form-control" id="inputCedula" name="cedula" placeholder="Cedula de Identidad">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputtelefono">Telefono</label>
+                          <input type="text" class="form-control" id="inputtelefono" name="telefono" placeholder="Telefono">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputState">Estado</label>
+                          <select id="inputState" name="estado" class="form-control">
+                            <option selected>Seleccione</option>
+                            <option>Merida</option>
+                          </select>
+                        </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Completar Registro</button>
+                    </form>
+                    @endif
+
+      @if(!empty($personas->first()->cedula))
         <div class="col-md-4">
           <div class="card">
             <div class="card-header">
@@ -10,15 +63,15 @@
             </div>
             <div class="card-body">
               <div class="mx-auto d-block">
-                <h5 class="text-sm-center mt-2 mb-1">{{ Auth::user()->name }}</h5>
+                <h5 class="text-sm-center mt-2 mb-1">{{ $personas->first()->name }} {{ $personas->first()->lastname }}</h5>
                 <div class="text-sm-center">
                   <i class=""></i> Administrador</div>
                 <div class="text-sm-center">
-                  <i class="fa fa-map-marker"></i> Merida, Venezuela</div>
+                  <i class="fa fa-map-marker"></i> {{$personas->first()->estado}} , Venezuela</div>
                 <div class="text-sm-center">
-                  <i class=""></i> V-23716595</div>  
+                  <i class=""></i> {{$personas->first()->tipocedula}}-{{$personas->first()->cedula}}</div> 
                 <div class="location text-sm-center">
-                  <i class=""></i> 0424-7527343</div>  
+                  <i class=""></i>{{$personas->first()->telefono}}</div>  
                 <div class="text-sm-center">
                     <i class=""></i> {{ Auth::user()->email }}</div>  
               </div>
@@ -31,7 +84,8 @@
                     <h4>Modificar Perfil</h4>
                   </div>
                   <div class="card-body">
-                    <div class="custom-tab">
+
+                    <div class="custom-tab" id="nav-tabs">
                       <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                           <a class="nav-item nav-link active" id="custom-nav-datos-tab" data-toggle="tab" href="#custom-nav-datos" role="tab" aria-controls="custom-nav-datos"
@@ -42,63 +96,53 @@
                       </nav>
                       <div class="tab-content pl-3 pt-2" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="custom-nav-datos" role="tabpanel" aria-labelledby="custom-nav-datos-tab">
-                        <form>
-                      <div class="form-row">
+                        
+                        <form action="{{ route('personas.update' , 'personas')}}" method="POST">
+                          @csrf
+                          @method('PUT')                      
+                        <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="inputname">Nombre</label>
-                          <input type="text" class="form-control" id="inputname" placeholder="Nombre">
+                          <input type="text" class="form-control @error('name') is-invalid @enderror"  id="inputname" name="name" value="{{$personas->first()->name}}">
                         </div>
                         <div class="form-group col-md-6">
                           <label for="inputlastname">Apellido</label>
-                          <input type="text" class="form-control" id="inputlastname" placeholder="Apellido">
+                          <input type="text" class="form-control @error('lastname') is-invalid @enderror" id="inputlastname" name="lastname" value="{{$personas->first()->lastname}}">
                         </div>
                       </div>
-                      <div class="form-row">
-                        <label class="col-md-12" for="inputtelefono">Cedula</label> 
-                        <div class="form-group col-md-2">
-                          <select id="tipocedula" name="tipocedula" class="form-control">
-                                <option value=""> </option>
-                                <option value="1">V-</option>
-                                <option value="2">E-</option> 
-                                <option value="3">P-</option> 
-                                <option value="4">J-</option> 
-                                <option value="5">G-</option> 
-                          </select>
-                        </div>
-                        <div class="form-group col-md-10">
-                          <input type="text" class="form-control" id="inputCedula" placeholder="Cedula de Identidad">
-                        </div>
-                      </div>
-                      <div class="form-row">
+                        <div class="form-row">
                         <div class="form-group col-md-6">
                           <label for="inputtelefono">Telefono</label>
-                          <input type="text" class="form-control" id="inputtelefono" placeholder="Telefono">
+                          <input type="text" class="form-control @error('telefono') is-invalid @enderror" id="inputtelefono" name="telefono" value="{{$personas->first()->telefono}}">
                         </div>
                         <div class="form-group col-md-6">
                           <label for="inputState">Estado</label>
-                          <select id="inputState" class="form-control">
-                            <option selected>Seleccione</option>
+                          <select id="inputState" name="estado" class="form-control">
+                            <option selected>{{$personas->first()->estado}}</option>
                             <option>Merida</option>
                           </select>
                         </div>
                       </div>
                       <button type="submit" class="btn btn-primary">Actualizar Datos</button>
                     </form>
+
                         </div>
                         <div class="tab-pane fade" id="custom-nav-password" role="tabpanel" aria-labelledby="custom-nav-password-tab">
-                          <form>
-                            <div class="form-group">
-                              <label for="Password1">Contrasena Actual</label>
-                              <input type="password" class="form-control" id="Password1">
-                            </div>
-                            <div class="form-group">
-                              <label for="Password2">Nueva Contrasena</label>
-                              <input type="password" class="form-control" id="Password2">
-                            </div>
-                            <div class="form-group">
-                              <label for="Password3">Repita la Contrasena</label>
-                              <input type="password" class="form-control" id="Password3">
-                            </div>
+                          <form action="{{ route('user.update', Auth::user() )}}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <div class="form-group">
+                              <label for="current_password">Contrasena Actual</label>
+                              <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password">
+                           </div>
+                           <div class="form-group">
+                              <label for="new_password">Nueva Contrasena</label>
+                              <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new_password" name="new_password">
+                           </div>
+                           <div class="form-group">
+                              <label for="password_confirmed">Repita la Contrasena</label>
+                              <input type="password" class="form-control @error('password_confirmed') is-invalid @enderror" id="password_confirmed" name="password_confirmed">
+                           </div>
                             <button type="submit" class="btn btn-primary">Actualizar</button>
                           </form>
                         </div>
@@ -107,4 +151,10 @@
                   </div>
                 </div>
               </div>
+
+
+
+              @endif
+
+
 </div>

@@ -175,7 +175,7 @@
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="content">
-                                            <a class="js-acc-btn" style="float:right" href="#">{{ Auth::user()->name }}</a>
+                                            <a class="js-acc-btn" style="float:right" href="#">{{ Auth::user()->name }} {{ Auth::user()->lastname }}</a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">

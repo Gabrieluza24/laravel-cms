@@ -10,6 +10,7 @@ return view('welcome');
 
 });
 
+Route::resource('user', 'UserController');
 Route::resource('cars', 'CarsController');
 Route::resource('personas', 'PersonasController');
 Route::get('/home', 'HomeController@index');

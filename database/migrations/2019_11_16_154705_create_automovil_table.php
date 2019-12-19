@@ -20,6 +20,8 @@ class CreateAutomovilTable extends Migration
                 $table->string('modelo',50);
                 $table->year('anno');
                 $table->unsignedInteger('capacidad');
+                $table->BigInteger('usuario_id')->unsigned();
+                $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();
             });
         }

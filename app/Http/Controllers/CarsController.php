@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class CarsController extends Controller
 {
@@ -14,7 +16,8 @@ class CarsController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();    
+        $usuario = Auth::user()->id;
+        $cars = Car::where('usuario_id',$usuario)->get();
         return view('cars')->with('cars',$cars);  
     }
 
@@ -36,16 +39,18 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
-            $this->validate($request,[ 
+
+        $this->validate($request,[ 
             'placa' => 'required',
             'marca' => 'required',
             'modelo' => 'required',
             'anno' => 'required',
-            'capacidad' => 'required',
+            'capacidad' => 'required'
         ]);
 
         $car = new Car;
 
+            $car->usuario_id = Auth::user()->id;
             $car->placa = $request->input('placa');
             $car->marca = $request->input('marca');
             $car->modelo = $request->input('modelo');
@@ -53,7 +58,8 @@ class CarsController extends Controller
             $car->capacidad = $request->input('capacidad');
             $car->save();
 
-             return redirect('/cars')->with('success','El Automovil Fue Agregado'); 
+
+        return redirect('/cars')->with('success','El Automovil Fue Agregado'); 
     }
 
     /**
