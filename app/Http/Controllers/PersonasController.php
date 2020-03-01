@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Persona;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 
+
 class PersonasController extends Controller
 {
+    public function __Construct()
+    {
+        $this->middleware('permission:personas.edit')->only(['edit', 'update']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +25,7 @@ class PersonasController extends Controller
     {
         $usuario = Auth::user()->id;
         $personas = Persona::where('usuario_id',$usuario)->get();
-        return view('personas')->with('personas',$personas);  
+        return view('personas', compact('personas'));   
     }
 
     /**
@@ -39,17 +45,24 @@ class PersonasController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {       
 
-            $this->validate($request,[ 
-            'name' => 'required',
-            'lastname'  => 'required',
-            'tipocedula' => 'required',
-            'cedula' => 'required',
-            'telefono' => 'required',
-            'estado' => 'required',
+        $rules = [
+            'name'      => 'bail|required|regex:/[a-zA-Z]*/i|max:50',
+            'lastname'  => 'bail|required|regex:/[a-zA-Z]*/i|max:50',
+            'tipocedula'=> 'bail|required|max:1|in:V,E',
+            'cedula'    => 'bail|required|digits_between:6,8|unique:personas,cedula',
+            'telefono'  => 'bail|required|digits_between:10,14',
+            'estado'    => 'bail|required|in:Merida',
+        ];
 
-            ]);
+        $messages = [
+            'name.max' => 'El campo nombre no debe poseer mas de :max caracteres',
+            'lastname.max' => 'El campo apellido no debe poseer mas de :max caracteres',
+            'estado.in' => 'No se reconoce el estado'
+        ];
+
+        $this->validate($request,$rules,$messages);
 
             $usuario = Auth::user();
         
@@ -68,7 +81,9 @@ class PersonasController extends Controller
             $persona->estado = $request->input('estado');
             $persona->save();
 
-             return redirect('/personas')->with('success','Los datos Fueron Agregados'); 
+        auth()->user()->assignRoles('usuario');
+
+        return redirect('/personas')->with('success','Registro completado con exito'); 
     }
 
     /**
@@ -103,12 +118,21 @@ class PersonasController extends Controller
      */
     public function update(Request $request)
     {
-            $this->validate($request,[ 
-            'name' => 'required',
-            'lastname'  => 'required',
-            'telefono' => 'required',
-            'estado' => 'required',
 
+            $this->validate($request,
+            [ 
+                'name'      => 'bail|required|alpha|max:50',
+                'lastname'  => 'bail|required|alpha|max:50',
+                'telefono'  => 'bail|required|digits_between:10,14',
+                'estado'    => 'bail|required|in:Merida',
+            ],
+            [
+
+                'name.max' => 'El campo nombre no debe poseer mas de :max caracteres',
+                'name.alpha' => 'El campo nombre solo puede contener letras',
+                'lastname.alpha' => 'El campo apellido solo puede contener letras',
+                'lastname.max' => 'El campo apellido no debe poseer mas de :max caracteres',
+                'estado.in' => 'No se reconoce el estado'
             ]);
 
             $usuario = Auth::user();
@@ -121,13 +145,13 @@ class PersonasController extends Controller
         $persona = Persona::where('usuario_id', $usuario->id);
 
             $persona->update([
-             'name'=> $request->name,
-             'lastname'=> $request->lastname,
-            'telefono' => $request->telefono,
-             'estado' => $request->estado,
+                'name'=> $request->name,
+                'lastname'=> $request->lastname,
+                'telefono' => $request->telefono,
+                'estado' => $request->estado,
             ]);
 
-        return redirect('/personas')->with('success','Los datos Fueron Agregados'); 
+        return redirect('/personas')->with('success','Los datos fueron actualizados con exito'); 
     
 
     }

@@ -2,6 +2,7 @@
 @include('layouts.main-layout')
 @include('layouts.mainfooter')
 
+
       <div class="row m-t-30">
       @if(empty($personas->first()->cedula))
                 <div class="col-lg-12">
@@ -65,7 +66,7 @@
               <div class="mx-auto d-block">
                 <h5 class="text-sm-center mt-2 mb-1">{{ $personas->first()->name }} {{ $personas->first()->lastname }}</h5>
                 <div class="text-sm-center">
-                  <i class=""></i> Administrador</div>
+                  <i class=""></i> {{auth()->user()->roles->pluck('name')->first()}}</div>
                 <div class="text-sm-center">
                   <i class="fa fa-map-marker"></i> {{$personas->first()->estado}} , Venezuela</div>
                 <div class="text-sm-center">
@@ -119,7 +120,7 @@
                           <label for="inputState">Estado</label>
                           <select id="inputState" name="estado" class="form-control">
                             <option selected>{{$personas->first()->estado}}</option>
-                            <option>Merida</option>
+                            <option >Merida</option>
                           </select>
                         </div>
                       </div>
@@ -132,16 +133,16 @@
                           @csrf
                           @method('PUT')
                           <div class="form-group">
-                              <label for="current_password">Contrasena Actual</label>
-                              <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name="current_password">
+                              <label for="current_password">Contraseña Actual</label>
+                              <input type="password" class="form-control " id="current_password" name="current_password">
                            </div>
                            <div class="form-group">
-                              <label for="new_password">Nueva Contrasena</label>
-                              <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new_password" name="new_password">
+                              <label for="new_password">Nueva Contraseña</label>
+                              <input type="password" class="form-control " id="new_password" name="new_password">
                            </div>
                            <div class="form-group">
-                              <label for="password_confirmed">Repita la Contrasena</label>
-                              <input type="password" class="form-control @error('password_confirmed') is-invalid @enderror" id="password_confirmed" name="password_confirmed">
+                              <label for="password_confirmed">Repita la Contraseña</label>
+                              <input type="password" class="form-control " id="password_confirmed" name="password_confirmed">
                            </div>
                             <button type="submit" class="btn btn-primary">Actualizar</button>
                           </form>

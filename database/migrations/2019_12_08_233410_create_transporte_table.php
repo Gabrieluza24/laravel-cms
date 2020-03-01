@@ -20,7 +20,7 @@ class CreateTransporteTable extends Migration
             $table->string('modelo',50);
             $table->year('anno');
             $table->string('chofer',100);
-            $table->unsignedInteger('capacidad');
+            $table->timestamps();
         });
         }
     }

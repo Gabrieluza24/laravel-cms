@@ -1,5 +1,4 @@
 @include('layouts.header')
-
 <body class="animsition">
     <div class="page-wrapper">
         <div class="page-content--bge5">
@@ -25,7 +24,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label>Contrasena</label>
+                                    <label>Contraseña</label>
                                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                     @error('password')
@@ -41,7 +40,7 @@
                                     <label>
                                         @if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Olvidaste tu contrasena?') }}
+                                            {{ __('Olvidaste tu contraseña?') }}
                                             </a>
                                         @endif
                                     </label>

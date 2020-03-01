@@ -1,5 +1,5 @@
 @include('layouts.mainheader')
-@include('modal_cars')
+@include('modal_transportes')
 @include('layouts.main-layout')
 @include('layouts.mainfooter')
 
@@ -14,41 +14,38 @@
                                                 <th>Marca</th>
                                                 <th>Modelo</th>
                                                 <th>Año</th>
-                                                <th>Capacidad</th>
-                                                @can('cars.destroy')
+                                                <th>Chofer</th>
                                                 <th>Accion</th>
-                                                @endcan
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($cars as $car)
-                                            <tr>
-                                                <td>{{ $car->placa }}</td>
-                                                <td>{{ $car->marca }}</td>
-                                                <td>{{ $car->modelo }}</td>
-                                                <td>{{ $car->anno }}</td>
-                                                <td>{{ $car->capacidad }} litros</td>
-                                                @can('cars.edit')
+                                            @foreach ($transportes as $transporte)
+                                            <tr> 
+                                                <td>{{ $transporte->placa }}</td>
+                                                <td>{{ $transporte->marca }}</td>
+                                                <td>{{ $transporte->modelo }}</td>
+                                                <td>{{ $transporte->anno }}</td>
+                                                <td>{{ $transporte->chofer }}</td>
                                                 <td>
                                                     <div class="table-data-feature">  
 
-                                                        <form action="{{ route('cars.edit',$car->placa)}}">
+                                                        <form action="{{ route('transportes.edit', $transporte->placa )}}">
                                                             @csrf
-                                                            <button type="button" class="item" data-placa="{{$car->placa}}" data-marca="{{$car->marca}}" data-modelo="{{$car->modelo}}" data-anno="{{$car->anno}}" data-capacidad="{{$car->capacidad}}"data-placement="top" data-toggle="modal" data-target="#editarAuto" >
-                                                                <i class="zmdi zmdi-edit">  </i>
+                                                            <button type="button" class="item" data-placa="{{$transporte->placa}}" data-marca="{{$transporte->marca}}" data-modelo="{{$transporte->modelo}}" data-anno="{{$transporte->anno}}" data-chofer="{{$transporte->chofer}}"data-placement="top" data-toggle="modal" data-target="#editarTransporte" >
+                                                                <i class="zmdi zmdi-edit"> </i>
                                                             </button>
                                                         </form>
                                                         
-                                                        @endcan
-                                                        @can('cars.destroy')
-                                                         <form action="{{ route('cars.destroy',$car->placa)}}" method="post" class="delete-confirm">
+                                                  
+
+                                                         <form action="{{ route('transportes.destroy',$transporte->placa)}}" method="post">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button class="item" type="submit" data-placement="top" title="Eliminar">
+                                                            <button class="item" type="submit" data-placement="top" title="Delete">
                                                                 <i class="zmdi zmdi-delete"> </i>
                                                             </button>
                                                          </form>
-                                                        @endcan
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -56,17 +53,15 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                @can('cars.store')
                                 <div class="table-data__tool-right" style="float:right">
 
-                                <form action="{{ route('cars.create')}}">
+                                <form action="{{ route('transportes.create')}}">
                                 @csrf
-                                <button type="button" class="au-btn au-btn-icon au-btn--blue au-btn--small" data-toggle="modal" data-target="#crearAuto">
+                                <button type="button" class="au-btn au-btn-icon au-btn--blue au-btn--small" data-toggle="modal" data-target="#crearTransporte">
                                             <i class="zmdi zmdi-plus"></i>Nuevo
                                 </button>
                                 </form>
                                 </div>
-                                @endcan
                                 <!-- END DATA TABLE-->
                                  
                         </div>
@@ -74,14 +69,14 @@
 
 <script>
 
-    $('#editarAuto').on('show.bs.modal', function (event) {
+    $('#editarTransporte').on('show.bs.modal', function (event) {
 
   var button = $(event.relatedTarget)
   var placa = button.data('placa')
   var marca = button.data('marca')
   var modelo = button.data('modelo')
   var anno = button.data('anno')
-  var capacidad = button.data('capacidad')
+  var chofer = button.data('chofer')
   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
@@ -91,27 +86,7 @@
   modal.find('.modal-body #marca').val(marca)
   modal.find('.modal-body #modelo').val(modelo)
   modal.find('.modal-body #anno').val(anno)
-  modal.find('.modal-body #capacidad').val(capacidad)
+  modal.find('.modal-body #chofer').val(chofer)
 
 })
-
-document.querySelector('.delete-confirm').addEventListener('submit', function(e) {
-  var form = this;
-  e.preventDefault();
-  swal({
-      title: "Advertencia",
-      text: "¿Esta seguro que deseas eliminar el automóvil?",
-      icon: "warning",
-      buttons: [
-        'Cancelar',
-        'Eliminar'
-      ],
-      dangerMode: true,
-    }).then(function(isConfirm) {
-      if (isConfirm) {
-          form.submit();
-      } else {
-      }
-    })
-});
 </script>

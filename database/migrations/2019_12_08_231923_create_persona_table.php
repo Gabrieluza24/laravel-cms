@@ -21,7 +21,7 @@ class CreatePersonaTable extends Migration
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
             $table->string('lastname');
-            $table->string('telefono')->unique();
+            $table->string('telefono');
             $table->string('estado');
             $table->timestamps();
         });

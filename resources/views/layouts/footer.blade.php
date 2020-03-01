@@ -5,6 +5,7 @@
     <!-- Bootstrap JS-->
     <script src="{{asset('assets/vendor/bootstrap-4.1/popper.min.js')}}"></script>
     <script src="{{asset('assets/vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Vendor JS       -->
     <script src="{{asset('assets/vendor/slick/slick.min.js')}}">
     </script>

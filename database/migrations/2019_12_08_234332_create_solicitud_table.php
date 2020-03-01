@@ -12,17 +12,19 @@ class CreateSolicitudTable extends Migration
      * @return void
      */
     public function up()
-    {
-        if (!Schema::hasTable('status')) {
-        Schema::create('status', function (Blueprint $table) {
-            $table->unsignedInteger('id')->unique();
-            $table->string('nombre_status');
-        });
-        }
-        
+    {       
         if (!Schema::hasTable('solicitud')) {
         Schema::create('solicitud', function (Blueprint $table) {
             $table->bigIncrements('codigo');
+            $table->BigInteger('usuario_id')->unsigned();
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('rif_estacion');            
+            $table->foreign('rif_estacion')->references('rif')->on('estacionservicio')->onDelete('cascade');
+            $table->string('placa_car');            
+            $table->foreign('placa_car')->references('placa')->on('cars')->onDelete('cascade');
+            $table->unsignedInteger('capacidad_car');
+            $table->unsignedInteger('id_status');
+            $table->date('aprobacion')->nullable();
             $table->timestamps();
         });
         }

@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,9 +11,10 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard</title>
+    <title>Gestor de Gasolina</title>
 
-    <!-- Fontfaces CSS-->
+    <script src="{{asset('assets/js/sweetalert.min.js')}}"></script>  
+      <!-- Fontfaces CSS-->
     <link href="{{asset('assets/css/font-face.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('assets/vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
     <link href="{{asset('assets/vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet" media="all">
@@ -35,3 +37,5 @@
     <link href="{{asset('assets/css/theme.css')}}" rel="stylesheet" media="all">
 
 </head>
+
+

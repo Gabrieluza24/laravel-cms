@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use App\Car;
 use Illuminate\Database\Seeder;
 
@@ -12,28 +13,19 @@ class AutomovilSeeder extends Seeder
      */
     public function run()
     {
-        
-        Car::create([
-        	
-        	'placa' => 'XNZ229',
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;'); // Desactivamos la revisión de claves foráneas
+        DB::table('cars')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1;'); // Reactivamos la revisión de claves foráneas
+
+        DB::table('cars')->insert([
+            'usuario_id' => '1',
+            'placa' => 'XNZ229',
             'marca' => 'toyota',
-        	'modelo'=> 'corolla',
-        	'anno' => '1991',
-        	'capacidad' => '40',
-        ]);
-
-
-
-        Car::create([
-            
-            'placa' => 'CRACKTOTAL',
-            'marca' => 'Ford',
-            'modelo'=> 'Fiesta',
-            'anno' => '2010',
-            'capacidad' => '50',
+            'modelo'=> 'corolla',
+            'anno' => '1991',
+            'capacidad' => '40',
         ]);
     }
-
 
 }
    

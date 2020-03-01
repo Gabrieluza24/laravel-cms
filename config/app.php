@@ -163,11 +163,14 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Caffeinated\Shinobi\ShinobiServiceProvider::class,
+        
 
         /*
          * Package Service Providers...
          */
+        Caffeinated\Shinobi\ShinobiServiceProvider::class,
+        UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -231,6 +234,8 @@ return [
         'Module' => Nwidart\Modules\Facades\Module::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Alert' => UxWeb\SweetAlert\SweetAlert::class,
+
     ],
 
 ];

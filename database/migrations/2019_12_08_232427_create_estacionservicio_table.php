@@ -16,11 +16,14 @@ class CreateEstacionservicioTable extends Migration
 
         if (!Schema::hasTable('estacionservicio')) {
         Schema::create('estacionservicio', function (Blueprint $table) {
-            $table->unsignedInteger('rif',10)->unique()->required();
+            $table->string('rif')->unique()->required();
             $table->string('nombre',100);
             $table->string('direccion',500);
             $table->unsignedInteger('surtidores');
             $table->unsignedInteger('capacidad');
+            $table->string('imagen')->nullable();            
+            $table->timestamps();
+
         });
         }
     }

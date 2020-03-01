@@ -5,10 +5,22 @@ namespace App\Http\Controllers;
 use App\Car;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Database\QueryException;
+
 
 
 class CarsController extends Controller
 {
+
+    public function __Construct()
+    {
+        $this->middleware('permission:cars.index')->only('index');
+        $this->middleware('permission:cars.edit')->only(['edit', 'update']);
+        $this->middleware('permission:cars.store')->only(['create', 'store']);
+        $this->middleware('permission:cars.show')->only('show');
+        $this->middleware('permission:cars.destroy')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +29,8 @@ class CarsController extends Controller
     public function index()
     {
         $usuario = Auth::user()->id;
-        $cars = Car::where('usuario_id',$usuario)->get();
-        return view('cars')->with('cars',$cars);  
+        $cars = Car::where('usuario_id',$usuario)->get();      
+        return view('cars', compact('cars')); 
     }
 
     /**
@@ -39,21 +51,28 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            'placa' => 'bail|required|alpha_num|between:6,7|unique:cars',
+            'marca' => 'bail|required|alpha',
+            'modelo' => 'bail|required',
+            'anno' => 'bail|required|digits:4',
+            'capacidad' => 'bail|required|numeric|min:1',
+        ];
 
-        $this->validate($request,[ 
-            'placa' => 'required',
-            'marca' => 'required',
-            'modelo' => 'required',
-            'anno' => 'required',
-            'capacidad' => 'required'
-        ]);
+        $messages = [
+            'placa.required' => 'Debe ingresar una placa para el automovil',
+            'placa.unique' => 'Este vehiculo ya ha sido registrado',
+            'capacidad.min' => 'La capadidad debe ser de al menos :min litro',
+        ];
 
+        $this->validate($request,$rules,$messages);
+ 
         $car = new Car;
 
             $car->usuario_id = Auth::user()->id;
-            $car->placa = $request->input('placa');
-            $car->marca = $request->input('marca');
-            $car->modelo = $request->input('modelo');
+            $car->placa = strtoupper($request->input('placa'));
+            $car->marca = strtoupper($request->input('marca'));
+            $car->modelo = strtoupper($request->input('modelo'));
             $car->anno = $request->input('anno');
             $car->capacidad = $request->input('capacidad');
             $car->save();
@@ -70,8 +89,8 @@ class CarsController extends Controller
      */
     public function show(Car $placa)
     {
-        $car = Car::where('placa','like','%'.$placa.'%'); 
-        return view('Car.show', compact('cars'));
+        $cars = Car::All(); 
+        return view('cars')->with('cars',$cars);  
     }
 
     /**
@@ -95,25 +114,41 @@ class CarsController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validate($request,[ 
-            'placa' => 'required',
-            'marca' => 'required',
-            'modelo' => 'required',
-            'anno' => 'required',
-            'capacidad' => 'required',
-        ]);
+         $car = Car::where('placa','like','%'.$request->key.'%');
+         $placa = $car->pluck('placa')->first();
 
-        $car = Car::where('placa','like','%'.$request->key.'%');
+         $rules = [
+            'placa' => 'bail|required|alpha_num|between:6,7',
+            'marca' => 'bail|required|alpha',
+            'modelo' => 'bail|required',
+            'anno' => 'bail|required|digits:4',
+            'capacidad' => 'bail|required|numeric|min:1',
+        ];
 
-        $car->update([
-             'placa'=> $request->placa,
-             'marca'=> $request->marca,
-             'modelo'=> $request->modelo,
-             'anno'=> $request->anno,
-             'capacidad'=> $request->capacidad,
-        ]);
-    
-    return redirect('/cars')->with('success','El Automovil Fue modificado'); 
+        $messages = [
+            'placa.required' => 'Debe ingresar una placa para el automovil',
+            'placa.unique' => 'Este vehiculo ya ha sido registrado',
+            'capacidad.min' => 'La capadidad debe ser de al menos :min litro',
+        ];
+
+        $this->validate($request,$rules,$messages);
+
+        try{
+            $car->update([
+                'placa'=> strtoupper($request->placa),
+                'marca'=> strtoupper($request->marca),
+                'modelo'=> strtoupper($request->modelo),
+                'anno'=> $request->anno,
+                'capacidad'=> $request->capacidad,
+            ]);
+
+            return redirect('/cars')->with('success','El Automovil Fue modificado');  
+        }
+
+        catch(QueryException $e){
+
+                return redirect()->back()->withErrors('Esta numero de placa ya ha sido registrada en el sistema');
+            }    
     }
 
     /**
@@ -126,6 +161,6 @@ class CarsController extends Controller
     {
         $car = Car::where('placa','like','%'.$placa.'%'); 
         $car->delete();
-        return back()->with('info','El Automovil Fue Eliminado');
+        return back()->with('success','El Automovil Fue Eliminado');
     }
 }
